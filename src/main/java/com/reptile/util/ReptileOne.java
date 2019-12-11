@@ -2,19 +2,26 @@ package com.reptile.util;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ReptileOne {
-
+    /**
+     * 将URL的资源以HTML格式保存在指定文件
+     * @param args
+     */
     public static void main(String[] args) {
 
-        String filepath = "d:/test.html";
 
-        String url_str = "https://www.x23us.com/html/79/79361/";
+        String url_str = "https://www.x23us.com/";
+        String filepath = "d:/index.html";
         URL url = null;
         try {
             url = new URL(url_str);
@@ -22,66 +29,32 @@ public class ReptileOne {
             e.printStackTrace();
         }
 
+
         CharSetNum charSetNum = new CharSetNum();
+
+        //获取网页的编码格式
         String charset = charSetNum.getEncodingByMeta(url_str);
-        int sec_cont = 1000;
-        try {
-            URLConnection url_con = url.openConnection();
-            url_con.setDoOutput(true);
-            url_con.setReadTimeout(10 * sec_cont);
-            url_con.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)");
-            InputStream htm_in = url_con.getInputStream();
 
-            String htm_str = InputStream2String(htm_in,charset);
+            InputStream htm_in = charSetNum.gethim(url);
 
+            //将网页通过指定字符编码格式转换出来
+            String htm_str = charSetNum.InputStream2String(htm_in,charset);
+
+            //解析网页
             Document doc= Jsoup.parse(htm_str);
-            saveHtml(filepath,htm_str);
-            System.out.println(doc);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    /**
-     * Method: saveHtml
-     * Description: save String to file
-     * @param filepath
-     * file path which need to be saved
-     * @param str
-     * string saved
-     */
-    public static void saveHtml(String filepath, String str){
 
-        try {
-      /*@SuppressWarnings("resource")
-      FileWriter fw = new FileWriter(filepath);
-      fw.write(str);
-      fw.flush();*/
-            OutputStreamWriter outs = new OutputStreamWriter(new FileOutputStream(filepath, true), "utf-8");
-            outs.write(str);
-            System.out.print(str);
-            outs.close();
-        } catch (IOException e) {
-            System.out.println("Error at save html...");
-            e.printStackTrace();
-        }
+            //将网页保存在指定文件夹
+            charSetNum.saveHtml(filepath,htm_str);
+
+            //获取 首页更新的小说的URL和标题
+            charSetNum.getUrlAndTitle(doc);
+
+
+        String htm_book = charSetNum.InputStream2String(htm_in,charset);
+       //     System.out.println(newest);
+
+           // System.out.println(doc.getElementsByClass("L"));
     }
-    /**
-     * Method: InputStream2String
-     * Description: make InputStream to String
-     * @param in_st
-     * inputstream which need to be converted
-     * @param charset
-     * encoder of value
-     * @throws IOException
-     * if an error occurred
-     */
-    public static String InputStream2String(InputStream in_st,String charset) throws IOException{
-        BufferedReader buff = new BufferedReader(new InputStreamReader(in_st, charset));
-        StringBuffer res = new StringBuffer();
-        String line = "";
-        while((line = buff.readLine()) != null){
-            res.append(line+"\r");
-        }
-        return res.toString();
-    }
+
+
 }
