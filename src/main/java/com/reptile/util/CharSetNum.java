@@ -1,17 +1,23 @@
 package com.reptile.util;
 
 import com.reptile.entity.HomePage;
-import com.reptile.mapper.SerchBookUrlAndTitleMapper;
+
 import org.apache.commons.io.IOUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.ParsePosition;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -124,17 +130,17 @@ public class CharSetNum {
         return res.toString();
     }
 
-    public List<HomePage> getUrlAndTitle(Document doc){
+    public List<HomePage> getUrlAndTitle(Document doc,String label){
         /**
-         * 获取风云榜的URL和书名
+         * 获取的URL和书名
          */
-        Elements newest= doc.getElementsByClass("poptext");           //dom元素   id选择
+        Elements newest= doc.getElementsByClass(label);           //dom元素   id选择
         List<HomePage> homePagelist=new ArrayList<HomePage>();
         for(int i=0;i<newest.size();i++){
             String a=newest.get(i).toString();
 
             String Url="(?<=href=\").*?(?=\")";
-            String st="([\u4e00-\u9fa5]+)";
+            String st="(?<=>)[^<>]+(?=<)";
 
             //1.将正在表达式封装成对象Patten 类来实现
             Pattern pattern = Pattern.compile(Url);
@@ -164,7 +170,7 @@ public class CharSetNum {
         return homePagelist;
     }
 
-    public static String getNowDate(Date date) {
+    public  String getNowDate(Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(date);
         return dateString;

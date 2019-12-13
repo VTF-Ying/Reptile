@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reptile.mapper.SerchBookUrlAndTitleMapper">
+    
+    <resultMap id="BaseResultMap" type="com.reptile.entity.HomePage">
+        <id column="book_id"  property="bookId" />
+        <result column="book_url" property="bookUrl"/>
+        <result column="book_name" property="bookName"/>
+        <result column="book_author" property="bookAuthor"/>
+        <result column="up_time" property="upTime"/>
+    </resultMap>
+
+    
+    <insert id="saveUrlAndTitle" parameterType="com.reptile.entity.HomePage">
+        INSERT INTO book.index_book(book_url,book_name,enabled_flag,up_time)
+         VALUES
+         <foreach collection="list" item="item" separator=",">
+             (#{item.bookUrl},#{item.bookName},1,#{item.upTime})
+        </foreach>
+    </insert>
+
+    <select id="serchAll" resultMap="BaseResultMap">
+       SELECT book_url,book_name FROM index_book
+    </select>
+
+    <select id="serchByName" resultMap="BaseResultMap">
+      SELECT book_url,book_name FROM index_book WHERE enabled_flag=1 and book_name LIKE #{name}
+    </select>
+
+    <delete id="clearAll">
+        truncate table index_book
+    </delete>
+    
+    <insert id="insertGetBook" parameterType="com.reptile.entity.HomePage">
+        INSERT INTO book.transition_book (book_url,book_name,enabled_flag,up_time,book_author)
+           values  (#{bookUrl},#{bookName},1,#{upTime},#{bookAuthor})
+    </insert>
+
+    <select id="serchByChapterName" resultMap="BaseResultMap">
+      SELECT * FROM book.transition_book WHERE enabled_flag=1 and book_name LIKE #{name}
+    </select>
+
+</mapper>

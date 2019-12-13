@@ -2,15 +2,10 @@ package com.reptile.util;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
-import java.io.*;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ReptileOne {
     /**
@@ -20,7 +15,7 @@ public class ReptileOne {
     public static void main(String[] args) {
 
 
-        String url_str = "https://www.x23us.com/";
+        String url_str = "https://www.x23us.com/html/78/78881/";
         String filepath = "d:/index.html";
         URL url = null;
         try {
@@ -47,7 +42,8 @@ public class ReptileOne {
             charSetNum.saveHtml(filepath,htm_str);
 
             //获取 首页更新的小说的URL和标题
-            charSetNum.getUrlAndTitle(doc);
+            String label="h3";
+            charSetNum.getUrlAndTitle(doc,label);
 
 
         String htm_book = charSetNum.InputStream2String(htm_in,charset);

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reptile.mapper.BookChapterMapper">
+    <resultMap id="BaseResultMap" type="com.reptile.entity.BookChapter">
+        <result column="book_id" property="bookId"/>
+        <result column="book_details_id" property="bookDetailsId"/>
+        <result column="book_chapter" property="bookChapter"/>
+        <result column="book_chapter_url" property="bookChapterUrl"/>
+    </resultMap>
+
+
+
+</mapper>
