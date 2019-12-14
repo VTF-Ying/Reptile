@@ -8,8 +8,19 @@
         <result column="book_details_id" property="bookDetailsId"/>
         <result column="book_chapter" property="bookChapter"/>
         <result column="book_chapter_url" property="bookChapterUrl"/>
+        <result column="up_time" property="upTime"/>
     </resultMap>
 
-
+<insert id="saveBookChapter" parameterType="com.reptile.entity.BookChapter">
+    INSERT INTO book.details_book(book_details_id,book_chapter,book_chapter_url,enabled_flag,up_time)
+    VALUES
+    <foreach collection="list" item="item" separator=",">
+        (#{item.bookDetailsId},#{item.bookChapter},#{item.bookChapterUrl},1,#{item.upTime})
+    </foreach>
+</insert>
+    
+<select id="selectChapterAll" resultType="integer" >
+        select * from book.details_book where enabled_flag=1 and book_chapter_url=#{url}
+</select>
 
 </mapper>

@@ -1,6 +1,8 @@
 package com.reptile.service;
 
+import com.reptile.entity.BookChapter;
 import com.reptile.entity.HomePage;
+import com.reptile.mapper.BookChapterMapper;
 import com.reptile.mapper.SerchBookUrlAndTitleMapper;
 import com.reptile.util.CharSetNum;
 import org.jsoup.Jsoup;
@@ -23,6 +25,8 @@ public class SerchBookService {
 
     @Autowired
     SerchBookUrlAndTitleMapper serchBookUrlAndTitleMapper;
+    @Autowired
+    BookChapterMapper bookChapterMapper;
 
     CharSetNum charSetNum = new CharSetNum();
 
@@ -105,26 +109,39 @@ public class SerchBookService {
         //获取 首页更新的小说的URL和标题
         String label="L";
         List list=charSetNum.getUrlAndTitle(doc,label);
-        List newlist=new ArrayList();
 
         String author_str=doc.getElementsByTag("h3").html();
         String author=author_str.substring(author_str.indexOf("：")+1,author_str.indexOf("&"));
 
         HomePage homePage = serchBookUrlAndTitleMapper.serchByName(name);
-                if (homePage==null){
-                    System.out.println("无");
-                }else {
+                if (homePage!=null){
                     homePage.setBookAuthor(author);
                     Date date=new Date();
                     homePage.setUpTime(charSetNum.getNowDate(date));
                     if (serchBookUrlAndTitleMapper.serchByChapterName(homePage.getBookName())==null){
                         serchBookUrlAndTitleMapper.insertGetBook(homePage);
-                        for (int i=0;i<list.size();i++){
-                            HomePage homePagelist= (HomePage) list.get(i);
-//                        if(serchBookUrlAndTitleMapper.serchByName(homePagelist.getBookName())==null){
-//                            newlist.add(list.get(i));
-                            System.out.println(list.get(i));
+                    }
+                    List<BookChapter> bookChapterlist=new ArrayList<BookChapter>();
+                    List<BookChapter> lis2=new ArrayList<BookChapter>();
+                    for (int i=0;i<list.size();i++){
+                        HomePage homePageChapter= (HomePage) list.get(i);
+
+                        BookChapter bookChapter=new BookChapter();
+                        String ChapterUrl=url_str+homePageChapter.getBookUrl();
+                        bookChapter.setBookChapterUrl(ChapterUrl);
+                        bookChapter.setBookChapter(homePageChapter.getBookName());
+                        bookChapter.setBookDetailsId(serchBookUrlAndTitleMapper.serchByChapterName(name).getBookId());
+                        bookChapter.setUpTime(charSetNum.getNowDate(date));
+                        bookChapterlist.add(bookChapter);
+                    }
+                    for (int i=0;i<bookChapterlist.size();i++){
+                      Integer k =  bookChapterMapper.selectChapterAll(bookChapterlist.get(i).getBookChapterUrl());
+                        if (k==null){
+                                lis2.add(bookChapterlist.get(i));
                         }
+                    }
+                    if (lis2.size()!=0){
+                        bookChapterMapper.saveBookChapter(lis2);
                     }
                 }
 

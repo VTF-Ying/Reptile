@@ -5,6 +5,15 @@ public class BookChapter {
     private int bookDetailsId;
     private String bookChapter;
     private String bookChapterUrl;
+    private String upTime;
+
+    public String getUpTime() {
+        return upTime;
+    }
+
+    public void setUpTime(String upTime) {
+        this.upTime = upTime;
+    }
 
     public int getBookId() {
         return bookId;

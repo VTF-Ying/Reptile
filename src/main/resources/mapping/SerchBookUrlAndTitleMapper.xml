@@ -22,7 +22,7 @@
     </insert>
 
     <select id="serchAll" resultMap="BaseResultMap">
-       SELECT book_url,book_name FROM index_book
+       SELECT book_url,book_name FROM index_book where enabled_flag=1
     </select>
 
     <select id="serchByName" resultMap="BaseResultMap">
@@ -39,7 +39,7 @@
     </insert>
 
     <select id="serchByChapterName" resultMap="BaseResultMap">
-      SELECT * FROM book.transition_book WHERE enabled_flag=1 and book_name LIKE #{name}
+      SELECT * FROM book.transition_book WHERE enabled_flag=1 and book_name = #{name}
     </select>
 
 </mapper>

@@ -1,5 +1,12 @@
 package com.reptile.mapper;
 
-public interface BookChapterMapper {
+import com.reptile.entity.BookChapter;
+import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
+@Repository
+public interface BookChapterMapper {
+    int saveBookChapter(List<BookChapter> bookChapter);
+    Integer selectChapterAll(String url);
 }
