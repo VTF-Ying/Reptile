@@ -8,5 +8,6 @@ import java.util.List;
 @Repository
 public interface BookChapterMapper {
     int saveBookChapter(List<BookChapter> bookChapter);
-    Integer selectChapterAll(String url);
+    BookChapter selectChapterAll(String url);
+    List<BookChapter> selectChapterAllById(Integer id);
 }

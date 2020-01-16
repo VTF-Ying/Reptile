@@ -29,8 +29,16 @@
       SELECT book_url,book_name FROM index_book WHERE enabled_flag=1 and book_name LIKE #{name}
     </select>
 
-    <delete id="clearAll">
+    <delete id="clearIndex">
         truncate table index_book
+    </delete>
+
+    <delete id="clearTransition">
+         truncate table book.transition_book
+    </delete>
+
+    <delete id="clearDetails">
+         truncate table book.details_book
     </delete>
     
     <insert id="insertGetBook" parameterType="com.reptile.entity.HomePage">

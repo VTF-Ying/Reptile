@@ -11,7 +11,9 @@ public interface SerchBookUrlAndTitleMapper {
         int saveUrlAndTitle(List<HomePage> homePage);
         List<HomePage> serchAll();
         HomePage serchByName(String name);
-        int clearAll();
+        int clearIndex();
+        int clearTransition();
+        int clearDetails();
         int insertGetBook(HomePage homePage);
         HomePage serchByChapterName(String name);
 }

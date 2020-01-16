@@ -1,12 +1,10 @@
 package com.reptile.controller;
 
+import com.reptile.entity.HomePage;
 import com.reptile.service.SerchBookService;
 import com.reptile.util.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -16,26 +14,25 @@ public class SearchBookController {
     SerchBookService serchBookService;
 
     @RequestMapping(value = "/serch",method = RequestMethod.POST)
-    public ResponseData<String> SearchBookUrlAndTitle(@RequestParam(value = "url_str") String url_str){
+    public ResponseData<String> SearchBookUrlAndTitle(@RequestBody HomePage homePage){
         ResponseData<String> resp=new ResponseData<>();
-        serchBookService.SerchBookUrlAndTitle(url_str);
+        serchBookService.SerchBookUrlAndTitle(homePage);
 
         resp.ok();
         return resp;
     }
 
     @RequestMapping(value = "/getbook",method = RequestMethod.POST)
-    public void getBookContent(String name){
-        serchBookService.getBookContent(name);
+    public void getBookContent(@RequestBody HomePage homePage){
+        serchBookService.getBookContent(homePage);
 
     }
 
     @RequestMapping(value = "/claerall",method = RequestMethod.POST)
-    public ResponseData<String> claerAll(@RequestParam(value = "pwd")Long pwd){
+    public ResponseData<String> claerAll(){
         ResponseData<String> resp=new ResponseData<>();
-        String result = serchBookService.claerAll(pwd);
+        String result = serchBookService.claerAll();
         resp.setData(result).ok();
         return  resp;
     }
-
 }
