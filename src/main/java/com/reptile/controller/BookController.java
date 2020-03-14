@@ -42,10 +42,10 @@ public class BookController {
      * @param book
      * @return
      */
-    @RequestMapping(value = "/book/getListBook", method = RequestMethod.POST)
+    @RequestMapping(value = "/book/getBookById", method = RequestMethod.POST)
     public ResponseData<Book> getListBook(@RequestBody Book book){
         ResponseData<Book> resp = new ResponseData<Book>();
-
+        resp.setData(bookService.getBookById(book.getBookId())).ok();
         return resp;
     }
 

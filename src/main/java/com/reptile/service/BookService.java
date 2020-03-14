@@ -1,6 +1,7 @@
 package com.reptile.service;
 
 import com.reptile.entity.Book;
+import com.reptile.mapper.BookMapper;
 import com.reptile.util.ResponseCode;
 import com.reptile.util.StringUtils;
 import com.reptile.util.exception.ApplicationException;
@@ -8,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,6 +25,9 @@ import java.util.Set;
  */
 @Service
 public class BookService {
+
+    @Autowired
+    private BookMapper bookMapper;
 
     public Set<Book> getUpdateBook(String url) {
         if (!StringUtils.isRealEmpty(null)){
@@ -46,6 +51,13 @@ public class BookService {
             books.add(book);
         }
         return books;
+    }
+
+    public Book getBookById(Long bookId){
+        if (bookId==0){
+            throw new ApplicationException(ResponseCode.INPUT_VALUE_IS_ILLEGAL);
+        }
+        return bookMapper.getBookById(bookId) ;
     }
 
 }

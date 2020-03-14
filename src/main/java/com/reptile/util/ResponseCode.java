@@ -24,8 +24,8 @@ public enum ResponseCode implements AppCode {
     INVALID_WORKER_ID(10103, "无效IdWorker标识，%d > %d"),
     UNKOWN_ELASTICSEARCH_BEAN(43, "无效获取elasticsearch实现bean"),
 
-    INPUT_VALUE_IS_NULL(10001,"输入值为空");
-
+    INPUT_VALUE_IS_NULL(10001,"输入值为空"),
+    INPUT_VALUE_IS_ILLEGAL(10002,"非法输入");
     private int code;
     private String message;
 
