@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @ProjectName: Reptile
  * @ClassName: BookMapper
@@ -16,6 +19,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookMapper {
 
-    Book getBookById(@Param("bookId")Long bookId);
+    int saveBooks(@Param("set") Set<Book> set);
+
+    List<Book> getAllBook();
+
+    Book getBookById(Book book);
+
+    Book getBookByName(Book book);
 
 }

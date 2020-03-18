@@ -1,5 +1,7 @@
 package com.reptile.util;
 
+import com.reptile.util.exception.ApplicationException;
+
 /**
  * @ProjectName: Reptile
  * @ClassName: StringUtils
@@ -43,12 +45,27 @@ public class StringUtils {
     public static boolean isTrimedEmpty(String s) {
         return s == null || s.trim().length() == 0;
     }
+
+    /**
+     * 查找">"最后出现的位置
+     * @param str
+     * @return
+     */
+    public static int varLast(String str,String i){
+        int lastIndex =str.lastIndexOf(i);
+        if(lastIndex == - 1){
+            throw new ApplicationException(ResponseCode.STRING_NOT_FOUND );
+        }
+        return lastIndex;
+    }
+
     /**
      * 判断字符串是否非空
      * 不去除首尾空格
      * @param s
      * @return
      */
+
     public static boolean isNotEmpty(String s) {
         return !isEmpty(s);
     }

@@ -19,6 +19,7 @@ public enum ResponseCode implements AppCode {
     SELECT_ONE_EXCEPTION(40, "数据获取失败！"),
     SELECT_EXCEPTION(41, "数据获取失败！"),
     SELECT_PAGINATION_EXCEPTION(42, "数据获取失败！"),
+    STRING_NOT_FOUND    (43,"没有找到字符串"),
     INVALID_SYSTEM_CLOCK(10101, "系统时间回调到当前时间之前的时间点，拒绝产生ID%d毫秒"),
     UNKOWN_WORKER_ID(10102, "无法获取IdWorker标识"),
     INVALID_WORKER_ID(10103, "无效IdWorker标识，%d > %d"),

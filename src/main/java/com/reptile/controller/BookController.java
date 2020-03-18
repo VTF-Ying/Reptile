@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Set;
+import java.util.*;
 
 /**
  * @ProjectName: Reptile
@@ -36,17 +37,41 @@ public class BookController {
         return resp;
     }
 
+    /**
+     * @Author VTF
+     * @Description 查询所有书籍
+     * @Param
+     **/
+    @RequestMapping(value = "/book/getAllBook", method = RequestMethod.POST)
+    public ResponseData<List<Book>> getAllBook(){
+        ResponseData<List<Book>> resp = new ResponseData<List<Book>>();
+        resp.setData(bookService.getAllBook()).ok();
+        return resp;
+    }
 
     /**
-     * 返回书籍名称和作者
+     * 根据ID查询单本书籍
      * @param book
      * @return
      */
     @RequestMapping(value = "/book/getBookById", method = RequestMethod.POST)
-    public ResponseData<Book> getListBook(@RequestBody Book book){
+    public ResponseData<Book> getBookById(@RequestBody Book book){
         ResponseData<Book> resp = new ResponseData<Book>();
-        resp.setData(bookService.getBookById(book.getBookId())).ok();
+        resp.setData(bookService.getBookById(book)).ok();
         return resp;
     }
+
+    /**
+     * 根据书籍名称查询单本书籍
+     * @param book
+     * @return
+     */
+    @RequestMapping(value = "/book/getBookByName", method = RequestMethod.POST)
+    public ResponseData<Book> getgetBookByName(@RequestBody Book book){
+        ResponseData<Book> resp = new ResponseData<Book>();
+        resp.setData(bookService.getBookByName(book)).ok();
+        return resp;
+    }
+
 
 }

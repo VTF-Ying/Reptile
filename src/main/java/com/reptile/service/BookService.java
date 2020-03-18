@@ -2,18 +2,20 @@ package com.reptile.service;
 
 import com.reptile.entity.Book;
 import com.reptile.mapper.BookMapper;
+import com.reptile.util.BookUtil;
+import com.reptile.util.DateUtil;
 import com.reptile.util.ResponseCode;
 import com.reptile.util.StringUtils;
 import com.reptile.util.exception.ApplicationException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,8 +31,13 @@ public class BookService {
     @Autowired
     private BookMapper bookMapper;
 
+    /**
+     * @Author VTF
+     * @Description //获取更新的书籍列表
+     * @Param
+     **/
     public Set<Book> getUpdateBook(String url) {
-        if (!StringUtils.isRealEmpty(null)){
+        if (StringUtils.isRealEmpty(url)){
             throw new ApplicationException(ResponseCode.INPUT_VALUE_IS_NULL);
         }
         Document document = null;
@@ -39,25 +46,50 @@ public class BookService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Elements selcetPlate = document.select("[class=update]");
-        Elements seectLI = selcetPlate.select("li");
-        Elements listBookName = seectLI.select("[class=ul1]");
-        Elements selectBookName = listBookName.select("a");
-        HashSet<Book> books = new HashSet<Book>();
-        for (Element bookName : selectBookName) {
-            Book book = new Book();
-            book.setBookName(bookName.text());
-            book.setBookUrl(bookName.attr("href"));
-            books.add(book);
+        Date date = new Date();
+        Set<Book> books = BookUtil.bookData(document);
+        HashSet<Book> listBooks = new HashSet<>();
+        for (Book book : books) {
+            book.setBookData(DateUtil.dateToStr(date,"yyyy-MM-dd HH:mm:ss"));
+            Book book1 = bookMapper.getBookByName(book);
+            if (book1 == null){
+                listBooks.add(book);
+            }
+        bookMapper.saveBooks(listBooks);
         }
-        return books;
+    return listBooks;
     }
 
-    public Book getBookById(Long bookId){
-        if (bookId==0){
+    /**
+     * @Author VTF
+     * @Description //查询所有书籍
+     * @Param 
+     **/
+    public List<Book> getAllBook(){
+        return bookMapper.getAllBook();
+    }
+
+    /**
+     * @Author VTF
+     * @Description //根据书籍ID获取书的信息
+     * @Param
+     **/
+    public Book getBookById(Book book){
+        if (book.getBookId() == null || book.getBookId()==0){
             throw new ApplicationException(ResponseCode.INPUT_VALUE_IS_ILLEGAL);
         }
-        return bookMapper.getBookById(bookId) ;
+        return bookMapper.getBookById(book) ;
     }
 
+    /**
+     * @Author VTF
+     * @Description //根据书籍名称查询单本书籍
+     * @Param
+     **/
+    public Book getBookByName(Book book){
+        if (book.getBookName() == null || book.getBookName().equals(" ")){
+            throw new ApplicationException(ResponseCode.INPUT_VALUE_IS_ILLEGAL);
+        }
+        return bookMapper.getBookByName(book) ;
+    }
 }
