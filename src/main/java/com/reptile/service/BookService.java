@@ -4,15 +4,10 @@ import com.reptile.entity.Book;
 import com.reptile.mapper.BookMapper;
 import com.reptile.util.BookUtil;
 import com.reptile.util.ResponseCode;
-import com.reptile.util.StringUtils;
 import com.reptile.util.exception.ApplicationException;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,17 +31,8 @@ public class BookService {
      * @Param
      **/
     public Set<Book> getUpdateBook(String url) {
-        if (StringUtils.isRealEmpty(url)){
-            throw new ApplicationException(ResponseCode.INPUT_VALUE_IS_NULL);
-        }
-        Document document = null;
-        try {
-            document = Jsoup.connect(url).timeout(5000).userAgent("Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1;Trident/5.0)").get();
-        } catch (IOException e) {
-            throw new ApplicationException(ResponseCode.UNKOWN_EXCEPTION);
-        }
-        Date date = new Date();
-        Set<Book> books = BookUtil.bookData(document);
+
+        Set<Book> books = BookUtil.bookData(url);
         HashSet<Book> listBooks = new HashSet<>();
         for (Book book : books) {
             Book book1 = bookMapper.getBookByName(book);
