@@ -42,21 +42,25 @@ public class BookService {
         }
         Document document = null;
         try {
-            document = Jsoup.connect(url).userAgent("Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1;Trident/5.0)").get();
+            document = Jsoup.connect(url).timeout(5000).userAgent("Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1;Trident/5.0)").get();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ApplicationException(ResponseCode.UNKOWN_EXCEPTION);
         }
         Date date = new Date();
         Set<Book> books = BookUtil.bookData(document);
         HashSet<Book> listBooks = new HashSet<>();
         for (Book book : books) {
-            book.setBookData(DateUtil.dateToStr(date,"yyyy-MM-dd HH:mm:ss"));
+            System.out.println(book.getBookName());
+            book.setBookUpdateDate(DateUtil.dateToStr(date,"yyyy-MM-dd HH:mm:ss"));
             Book book1 = bookMapper.getBookByName(book);
             if (book1 == null){
                 listBooks.add(book);
             }
-        bookMapper.saveBooks(listBooks);
         }
+        if(listBooks.size()==0){
+            return listBooks;
+        }
+        bookMapper.saveBooks(listBooks);
     return listBooks;
     }
 

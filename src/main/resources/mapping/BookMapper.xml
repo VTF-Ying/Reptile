@@ -9,7 +9,6 @@
         <result column="book_url" property="bookUrl"/>
         <result column="book_author" property="bookAuthor"/>
         <result column="book_type" property="bookType"/>
-        <result column="book_data" jdbcType="BIGINT" property="bookData"/>
         <result column="book_update_date" jdbcType="VARCHAR" property="bookUpdateDate"/>
     </resultMap>
 

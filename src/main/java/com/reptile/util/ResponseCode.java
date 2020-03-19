@@ -9,7 +9,7 @@ package com.reptile.util;
  */
 public enum ResponseCode implements AppCode {
     RESOURCE_NOT_FOUND(404, "资源不存在"),
-    UNKOWN_EXCEPTION(-1, "系统压力山大,请稍后重试！"),
+    UNKOWN_EXCEPTION(-1, "请稍后重试！"),
     SUCCESS(0, "OK"),
     INSERT_EXCEPTION(10, "数据新增失败！"),
     INSERT_BATCH_EXCEPTION(11, "数据新增失败！"),
