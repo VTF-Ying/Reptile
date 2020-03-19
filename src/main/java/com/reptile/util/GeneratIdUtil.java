@@ -37,8 +37,8 @@ public class GeneratIdUtil {
      * @return
      */
     public static Long getGeneratID(){
-        String sformat = "yyyyMMddhhmmss";
-        int num = 3;
+        String sformat = "yyyyMMdd";
+        int num = 9;
         String idStr = getDate(sformat) + getRandomNum(num);
         Long id = Long.valueOf(idStr);
         return id;

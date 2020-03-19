@@ -3,7 +3,6 @@ package com.reptile.service;
 import com.reptile.entity.Book;
 import com.reptile.mapper.BookMapper;
 import com.reptile.util.BookUtil;
-import com.reptile.util.DateUtil;
 import com.reptile.util.ResponseCode;
 import com.reptile.util.StringUtils;
 import com.reptile.util.exception.ApplicationException;
@@ -50,8 +49,6 @@ public class BookService {
         Set<Book> books = BookUtil.bookData(document);
         HashSet<Book> listBooks = new HashSet<>();
         for (Book book : books) {
-            System.out.println(book.getBookName());
-            book.setBookUpdateDate(DateUtil.dateToStr(date,"yyyy-MM-dd HH:mm:ss"));
             Book book1 = bookMapper.getBookByName(book);
             if (book1 == null){
                 listBooks.add(book);

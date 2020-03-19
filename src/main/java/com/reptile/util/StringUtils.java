@@ -47,13 +47,26 @@ public class StringUtils {
     }
 
     /**
-     * 查找">"最后出现的位置
+     * 查找字符最后出现的位置
      * @param str
      * @return
      */
     public static int varLast(String str,String i){
         int lastIndex =str.lastIndexOf(i);
         if(lastIndex == - 1){
+            throw new ApplicationException(ResponseCode.STRING_NOT_FOUND );
+        }
+        return lastIndex;
+    }
+
+    /**
+     * 查找字符最后出现的位置
+     * @param str
+     * @return
+     */
+    public static int varFirst(String str,String i){
+        int lastIndex =str.lastIndexOf(i);
+        if(lastIndex == 1){
             throw new ApplicationException(ResponseCode.STRING_NOT_FOUND );
         }
         return lastIndex;

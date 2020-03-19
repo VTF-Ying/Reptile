@@ -2,11 +2,9 @@ package com.reptile.util;
 
 import com.reptile.entity.Book;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.HashSet;
-import java.util.*;
 /**
  * @ProjectName: Reptile
  * @ClassName: BookUtil
@@ -26,40 +24,22 @@ public class BookUtil {
     public static <T> HashSet<Book> bookData(Document document){
 
         Elements selcetPlate = document.select("[class=update]");
-        Elements selcetP = selcetPlate.select("p");
+        Elements selcetLi = selcetPlate.select("li");
 
-        List<List<Element>> bookStr= ListUtil.splitToPieces(selcetP,3);
         HashSet<Book> books = new HashSet<Book>();
-
-        for (List<Element> elements : bookStr) {
+        for (int i = 0; i <30 ; i++) {
             Book book = new Book();
-
-            for (int i = 0; i <elements.size() ; i++) {
-                StringBuffer Str = new StringBuffer();
-                if (i==0){
-                    String bookType = (Str.append(elements.get(i))).substring(15,21);
-                    book.setBookType(bookType);
-                    String bookNameStr = Str.append(elements.get(i)).substring(0,(Str.append(elements.get(i))).length()-9);
-                    int j = StringUtils.varLast(bookNameStr,">");
-                    String bookName = bookNameStr.substring(j+1,bookNameStr.length());
-                    book.setBookName(bookName);
-                    int n = StringUtils.varLast(bookNameStr,"https");
-                    int m = StringUtils.varLast(bookNameStr,"title");
-                    String bookUrl = bookNameStr.substring(n,m-2);
-                    book.setBookUrl(bookUrl);
-                }
-                if(i==1){
-                    continue;
-                }
-                if (i==2){
-                    String string = (Str.append(elements.get(i))).substring(3);
-                    String bookAuthor = string.substring(0,string.length()-4);
-                    book.setBookAuthor(bookAuthor);
-                }
-            }
+            String str = (selcetLi.get(i).select("p")).select("[class=ul1]").text();
+            String str1 = selcetLi.get(i).select("a").attr("title").toString();
             book.setBookId(GeneratIdUtil.getGeneratID());
+            book.setBookType(str.substring(0,StringUtils.varLast(str,"]")+1));
+            book.setBookName(str1.substring(0,StringUtils.varLast(selcetLi.get(i).select("[class=ul1]").select("a").attr("title"),"txt")));
+            book.setBookUrl(selcetLi.get(i).select("[class=ul1]").select("a").attr("href"));
+            book.setBookUpdateDate(GeneratIdUtil.getDate("yyyyMMddhhmmss"));
+            book.setBookAuthor(selcetLi.get(i).select("p:nth-child(3)").text());
             books.add(book);
         }
+
         return books;
     }
 
