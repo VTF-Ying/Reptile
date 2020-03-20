@@ -10,10 +10,11 @@
         <result column="book_author" property="bookAuthor"/>
         <result column="book_type" property="bookType"/>
         <result column="book_update_date" jdbcType="VARCHAR" property="bookUpdateDate"/>
+        <result column="book_introduction" property="bookIntroduction"/>
     </resultMap>
 
     <insert id="saveBooks" >
-        insert into index_book (book_id,book_name,book_url,book_author,book_type,book_update_date,enabled_flag) values <foreach collection="set" item="item" index="index" separator="," >(#{item.bookId},#{item.bookName},#{item.bookUrl},#{item.bookAuthor},#{item.bookType},#{item.bookUpdateDate},'1')</foreach>
+        insert into index_book (book_id,book_name,book_url,book_author,book_type,book_update_date,enabled_flag,book_introduction) values <foreach collection="set" item="item" index="index" separator="," >(#{item.bookId},#{item.bookName},#{item.bookUrl},#{item.bookAuthor},#{item.bookType},#{item.bookUpdateDate},'1',#{item.bookIntroduction})</foreach>
     </insert>
 
     <select id="getAllBook" resultMap="BaseResultMap">

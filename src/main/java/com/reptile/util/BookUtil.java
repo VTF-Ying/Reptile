@@ -1,13 +1,13 @@
 package com.reptile.util;
 
-import com.reptile.entity.Book;
+import com.reptile.mapper.BookMapper;
 import com.reptile.util.exception.ApplicationException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.util.HashSet;
 /**
  * @ProjectName: Reptile
  * @ClassName: BookUtil
@@ -17,6 +17,9 @@ import java.util.HashSet;
  */
 public class BookUtil {
 
+    @Autowired
+    private BookMapper bookMapper;
+
     /**
      * 对新增书籍的详情进行拼接
      * @param url
@@ -24,12 +27,12 @@ public class BookUtil {
      * @return
      */
 
-    public static <T> HashSet<Book> bookData(String url){
+    public static <T> Elements bookData(String url){
+
         if (StringUtils.isRealEmpty(url)){
             throw new ApplicationException(ResponseCode.INPUT_VALUE_IS_NULL);
         }
         Document document = null;
-        Document document1 = null;
         try {
             document = Jsoup.connect(url).timeout(5000).userAgent("Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1;Trident/5.0)").get();
         } catch (IOException e) {
@@ -37,29 +40,21 @@ public class BookUtil {
         }
         Elements selcetPlate = document.select("[class=update]");
         Elements selcetLi = selcetPlate.select("li");
-
-        HashSet<Book> books = new HashSet<Book>();
-        for (int i = 0; i <30 ; i++) {
-            Book book = new Book();
-            String str = (selcetLi.get(i).select("p")).select("[class=ul1]").text();
-            String str1 = selcetLi.get(i).select("a").attr("title").toString();
-            book.setBookId(GeneratIdUtil.getGeneratID());
-            book.setBookType(str.substring(0,StringUtils.varLast(str,"]")+1));
-            book.setBookName(str1.substring(0,StringUtils.varLast(selcetLi.get(i).select("[class=ul1]").select("a").attr("title"),"txt")));
-            book.setBookUrl(selcetLi.get(i).select("[class=ul1]").select("a").attr("href"));
-            book.setBookUpdateDate(GeneratIdUtil.getDate("yyyyMMddhhmmss"));
-            book.setBookAuthor(selcetLi.get(i).select("p:nth-child(3)").text());
-            try {
-                document1=Jsoup.connect(selcetLi.get(i).select("[class=ul1]").select("a").attr("href")).timeout(5000).userAgent("Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1;Trident/5.0)").get();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            books.add(book);
-        }
-
-        return books;
+        return selcetLi;
     }
 
+    public static String bookIntroduction(String url){
+        if (StringUtils.isRealEmpty(url)){
+            throw new ApplicationException(ResponseCode.INPUT_VALUE_IS_NULL);
+        }
+        Document document1 = null;
+        try {
+            document1=Jsoup.connect(url).timeout(5000).userAgent("Mozilla/4.0 (compatible; MSIE 9.0; Windows NT 6.1;Trident/5.0)").get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Elements selcetDP = document1.select("dd > p");
 
+        return (selcetDP.get(1).toString()).substring(3,selcetDP.get(1).toString().length()-4);
+    }
 }

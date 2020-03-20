@@ -23,7 +23,8 @@ class ReptileApplicationTests {
         }
         Elements selcetPlate = document.select("dd > p");
 //        Elements selcetLi = selcetPlate.select("li");
-            System.out.println(selcetPlate);
+        selcetPlate.get(1);
+            System.out.println(selcetPlate.get(1).text());
 
 
             // System.out.println((element.select("p")).select("[class=ul1]").text() + " " +(element.select("p")).select("[class=ul1]").select("a").attr("href")+" "+element.select("p:nth-child(3)").text());
