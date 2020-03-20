@@ -23,8 +23,8 @@ public interface BookMapper {
 
     List<Book> getAllBook();
 
-    Book getBookById(Book book);
+    Book getBookByNameOrId(Book book);
 
-    Book getBookByName(Book book);
+    Set<Book> getBookByDate();
 
 }

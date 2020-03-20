@@ -1,5 +1,9 @@
 package com.reptile.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @ProjectName: Reptile
  * @ClassName: BookData
@@ -7,9 +11,12 @@ package com.reptile.entity;
  * @Author: VTF
  * @create: 2020-03-19 09:37
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookData {
-    private int id;             //章节 ID
+    private Long id;             //章节 ID
     private Long bookId;        //书籍 ID
     private String bookChapter; //章节名
-    private String bookChapterData; // 章节内容
+    private String bookChapterUrl; // 章节内容url
 }

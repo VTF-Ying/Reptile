@@ -1,12 +1,15 @@
 package com.reptile.service;
 
 import com.reptile.entity.Book;
+import com.reptile.entity.BookData;
+import com.reptile.mapper.BookDataMapper;
 import com.reptile.mapper.BookMapper;
 import com.reptile.util.BookUtil;
 import com.reptile.util.GeneratIdUtil;
 import com.reptile.util.ResponseCode;
 import com.reptile.util.StringUtils;
 import com.reptile.util.exception.ApplicationException;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,10 @@ public class BookService {
     @Autowired
     private BookMapper bookMapper;
 
+    @Autowired
+    private BookDataMapper bookDataMapper;
+
+
     /**
      * @Author VTF
      * @Description //获取更新的书籍列表
@@ -42,24 +49,24 @@ public class BookService {
             String str = (selcetLi.get(i).select("p")).select("[class=ul1]").text();
             String str1 = selcetLi.get(i).select("a").attr("title").toString();
             book.setBookName(str1.substring(0, StringUtils.varLast(selcetLi.get(i).select("[class=ul1]").select("a").attr("title"),"txt")));
-            Book book1 = bookMapper.getBookByName(book);
+            Book book1 = bookMapper.getBookByNameOrId(book);
             if (book1 != null){
                 continue;
             }
             book.setBookId(GeneratIdUtil.getGeneratID());
             book.setBookType(str.substring(0,StringUtils.varLast(str,"]")+1));
             book.setBookUrl(selcetLi.get(i).select("[class=ul1]").select("a").attr("href"));
-            book.setBookUpdateDate(GeneratIdUtil.getDate("yyyyMMddhhmmss"));
+            book.setBookUpdateDate(GeneratIdUtil.getDate("yyyy-MM-dd"));
             book.setBookAuthor(selcetLi.get(i).select("p:nth-child(3)").text());
             book.setBookIntroduction(BookUtil.bookIntroduction(book.getBookUrl()));
             listBooks.add(book);
         }
 
         if(listBooks.size()==0){
-            return listBooks;
+            return bookMapper.getBookByDate();
         }
         bookMapper.saveBooks(listBooks);
-    return listBooks;
+     return bookMapper.getBookByDate();
     }
 
     /**
@@ -73,25 +80,26 @@ public class BookService {
 
     /**
      * @Author VTF
-     * @Description //根据书籍ID获取书的信息
+     * @Description //根据书籍ID 或者书名 获取书的信息
      * @Param
      **/
-    public Book getBookById(Book book){
-        if (book.getBookId() == null || book.getBookId()==0){
+    public Book getBookByNameOrId(Book book){
+        if ((book.getBookId() == null || book.getBookId()==0) && (book.getBookName() == null || book.getBookName().equals(" "))){
             throw new ApplicationException(ResponseCode.INPUT_VALUE_IS_ILLEGAL);
         }
-        return bookMapper.getBookById(book) ;
-    }
-
-    /**
-     * @Author VTF
-     * @Description //根据书籍名称查询单本书籍
-     * @Param
-     **/
-    public Book getBookByName(Book book){
-        if (book.getBookName() == null || book.getBookName().equals(" ")){
-            throw new ApplicationException(ResponseCode.INPUT_VALUE_IS_ILLEGAL);
+        Book book1 = bookMapper.getBookByNameOrId(book);
+        String bookUrl =  BookUtil.document(book1.getBookUrl()).select("[class=hst]").attr("href").toString();
+        Elements chapter = BookUtil.bookChapter(book1);
+        Set<BookData> bookDatas = new HashSet<>();
+        for (Element element : chapter) {
+            BookData bookData = new BookData();
+            bookData.setBookChapterUrl(bookUrl+element.select("a").attr("href"));
+            bookData.setBookId(book1.getBookId());
+            bookData.setId(GeneratIdUtil.getGeneratID(bookUrl));
+            bookData.setBookChapter(element.select("a").text());
+            bookDatas.add(bookData);
         }
-        return bookMapper.getBookByName(book) ;
+        bookDataMapper.saveBookChapter(bookDatas);
+        return bookMapper.getBookByNameOrId(book);
     }
 }

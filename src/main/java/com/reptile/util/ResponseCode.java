@@ -26,7 +26,7 @@ public enum ResponseCode implements AppCode {
     UNKOWN_ELASTICSEARCH_BEAN(43, "无效获取elasticsearch实现bean"),
 
     INPUT_VALUE_IS_NULL(10001,"输入值为空"),
-    INPUT_VALUE_IS_ILLEGAL(10002,"非法输入");
+    INPUT_VALUE_IS_ILLEGAL(10002,"查询失败");
     private int code;
     private String message;
 

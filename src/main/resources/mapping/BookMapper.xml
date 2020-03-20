@@ -21,19 +21,22 @@
         select * from index_book where enabled_flag=1
     </select>
 
-    <select id="getBookById" resultMap="BaseResultMap" parameterType="com.reptile.entity.Book">
+    <select id="getBookByNameOrId" resultMap="BaseResultMap" parameterType="com.reptile.entity.Book">
         select * from index_book where enabled_flag=1
+        <if test="bookName != null and bookName != ''" >
+            and book_name=#{bookName};
+        </if>
         <if test="bookId != null">
             and book_id=#{bookId};
         </if>
     </select>
 
-    <select id="getBookByName" resultMap="BaseResultMap" parameterType="com.reptile.entity.Book">
-        select * from index_book where enabled_flag=1
-        <if test="bookName != null and bookName != ''" >
-            and book_name=#{bookName};
-        </if>
+    <select id="getBookByDate" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM
+        `index_book`
+        ORDER BY
+        `book_update_date` DESC
     </select>
-
-    
 </mapper>

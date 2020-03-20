@@ -43,4 +43,13 @@ public class GeneratIdUtil {
         Long id = Long.valueOf(idStr);
         return id;
     }
+
+    public static Long getGeneratID(String str){
+        String sformat = "MMdd";
+        int num = 5;
+        String idStr = (str.substring(0,str.length()-1)).substring(StringUtils.varLast(str.substring(0,str.length()-3),"/")+1,(str.substring(0,str.length()-1)).length())+getDate(sformat) + getRandomNum(num);
+        Long id = Long.valueOf(idStr);
+        return id;
+    }
+
 }

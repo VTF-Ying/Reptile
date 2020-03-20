@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.reptile.mapper.BookDataMapper">
+    <resultMap id="BaseResultMap" type="com.reptile.entity.BookData">
+        <id column="id" property="id"/>
+        <result column="book_id" property="bookId"/>
+        <result column="book_chapter" property="bookChapter"/>
+        <result column="book_chapter_url" property="bookChapterUrl"/>
+    </resultMap>
+
+    <insert id="saveBookChapter">
+        insert into book_content (id,book_id,book_chapter,book_chapter_url,enabled_flag) values <foreach collection="bookData" item="item" index="index" separator="," >(#{item.id},#{item.bookId},#{item.bookChapter},#{item.bookChapterUrl},'1')</foreach>
+    </insert>
+
+</mapper>
