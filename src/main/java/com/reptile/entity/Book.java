@@ -19,6 +19,7 @@ public class Book {
     private String bookName; //书籍名
     private String bookAuthor;  //作者
     private String bookType;  //书籍类型
+    private String bookIntroduction; //书籍介绍
     private String bookUpdateDate; //书籍更新时间
 
 }
