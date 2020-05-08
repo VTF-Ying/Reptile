@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 public class Book {
     private Long bookId;   //书籍ID
     private String bookUrl;  //书籍地址
@@ -22,4 +22,7 @@ public class Book {
     private String bookIntroduction; //书籍介绍
     private String bookUpdateDate; //书籍更新时间
 
+    public Book(String bookName) {
+        System.out.println(bookName);
+    }
 }

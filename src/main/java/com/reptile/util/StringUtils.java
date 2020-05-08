@@ -60,7 +60,7 @@ public class StringUtils {
     }
 
     /**
-     * 查找字符最后出现的位置
+     * 查找字符最先出现的位置
      * @param str
      * @return
      */

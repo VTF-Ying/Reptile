@@ -50,28 +50,15 @@ public class BookController {
     }
 
     /**
-     * 根据ID查询单本书籍
+     * 根据书籍ID 或者书名 获取书的信息
      * @param book
      * @return
      */
-    @RequestMapping(value = "/book/getBookById", method = RequestMethod.POST)
-    public ResponseData<Book> getBookById(@RequestBody Book book){
+    @RequestMapping(value = "/book/getBookByNameOrId", method = RequestMethod.POST)
+    public ResponseData<Book> getBookByNameOrId(@RequestBody Book book){
         ResponseData<Book> resp = new ResponseData<Book>();
-        resp.setData(bookService.getBookById(book)).ok();
+        resp.setData(bookService.getBookByNameOrId(book)).ok();
         return resp;
     }
-
-    /**
-     * 根据书籍名称查询单本书籍
-     * @param book
-     * @return
-     */
-    @RequestMapping(value = "/book/getBookByName", method = RequestMethod.POST)
-    public ResponseData<Book> getgetBookByName(@RequestBody Book book){
-        ResponseData<Book> resp = new ResponseData<Book>();
-        resp.setData(bookService.getBookByName(book)).ok();
-        return resp;
-    }
-
 
 }
