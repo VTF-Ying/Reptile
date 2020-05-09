@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="OFF" monitorInterval="1800">
+    <properties>
+        <!-- 下面这二行随意，sys:catalina.home为tomcat的路径，这里的monitor只是我项目的名字  -->
+         <property name="LOG_HOME">/root/log/monitor</property>
+        <property name="FILE_NAME">monitor</property>
+    </properties>
+
+    <Appenders>
+        <!-- 控制台日志  -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5level %logger{36} - %msg%n" />
+        </Console>
+
+        <!-- error 日志 -->
+        <RollingFile name="error-log" fileName="/root/log/error.log"
+                     filePattern="${LOG_HOME}/error/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.%level_log.gz"
+                     immediateFlush="true">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout
+                    pattern="%date{yyyy-MM-dd HH:mm:ss} %level [%thread][%file:%line] - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="90" />
+        </RollingFile>
+
+        <!-- warn 日志 -->
+        <RollingFile name="warn-log" fileName="/root/log/warn.log"
+                     filePattern="${LOG_HOME}/warn/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.%level_log.gz"
+                     immediateFlush="true">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout
+                    pattern="%date{yyyy-MM-dd HH:mm:ss} %level [%thread][%file:%line] - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="90" />
+        </RollingFile>
+
+        <!-- info 日志 -->
+        <RollingFile name="info-log" fileName="/root/log/info.log"
+                     filePattern="${LOG_HOME}/info/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.%level_log.gz"
+                     immediateFlush="true">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout
+                    pattern="%date{yyyy-MM-dd HH:mm:ss} %level [%thread][%file:%line] - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="90" />
+        </RollingFile>
+
+        <!-- debug 日志 -->
+        <RollingFile name="debug-log" fileName="/root/log/debug.log"
+                     filePattern="${LOG_HOME}/debug/$${date:yyyy-MM}/${FILE_NAME}-%d{yyyy-MM-dd}-%i.log.gz"
+                     immediateFlush="true">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="info" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <PatternLayout
+                    pattern="%date{yyyy-MM-dd HH:mm:ss} %level [%thread][%file:%line] - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="90" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- 正式环境↓ 改为 info 级别 -->
+        <Root level="info">
+            <!-- 这里是输入到文件-->
+            <appender-ref ref="error-log" />
+            <appender-ref ref="warn-log" />
+            <appender-ref ref="info-log" />
+            <!-- 正式环境 下面 ↓  两项删除     -->
+<!--            <appender-ref ref="debug-log" />-->
+<!--            <appender-ref ref="Console" />-->
+        </Root>
+    </Loggers>
+</Configuration>

@@ -11,6 +11,8 @@ import com.reptile.util.StringUtils;
 import com.reptile.util.exception.ApplicationException;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,7 @@ public class BookService {
     @Autowired
     private BookDataMapper bookDataMapper;
 
+    Logger logger = LoggerFactory.getLogger(BookService.class);
 
     /**
      * @Author VTF
