@@ -11,9 +11,12 @@ import com.reptile.util.StringUtils;
 import com.reptile.util.exception.ApplicationException;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +37,7 @@ public class BookService {
     @Autowired
     private BookDataMapper bookDataMapper;
 
+    Logger logger = LoggerFactory.getLogger(BookService.class);
 
     /**
      * @Author VTF
@@ -66,6 +70,7 @@ public class BookService {
             return bookMapper.getBookByDate();
         }
         bookMapper.saveBooks(listBooks);
+        logger.debug( new Date("yyyy-HH-mm-ss")+""+ (bookMapper.getBookByDate()).toString());
      return bookMapper.getBookByDate();
     }
 
